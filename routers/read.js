@@ -23,4 +23,14 @@ router.get("/by-title", (req, res) => {
     res.json({ status: 200, data: moviesSortedByTitle });
 })
 
+router.get("/id/:name", (req, res) => {
+    let requestedMovie = movies.filter((a) => a.title == req.params.name);
+    if(requestedMovie.length == 0) {
+        res.status(404).json({status:404, error:true, message:`the movie ${req.params.name} does not exist`})
+    } 
+    else {
+        res.json({ status: 200, data: requestedMovie });
+    }
+})
+
 module.exports = router;
