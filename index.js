@@ -1,8 +1,10 @@
 const express = require("express")
 const app = express()
 const moviesRouter = require("./routers/movies")
+const readRouter = require("./routers/read")
 
 app.use("/movies", moviesRouter)
+app.use("/movies/read", readRouter)
 
 
 app.get('/', (req, res) => {
