@@ -1,5 +1,9 @@
 const express = require("express")
 const app = express()
+const moviesRouter = require("./routers/movies")
+
+app.use("/movies", moviesRouter)
+
 
 app.get('/', (req, res) => {
     res.json({message: "ok"})
