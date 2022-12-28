@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const movies = [
+let movies = [
     { title: 'Jaws', year: 1975, rating: 8 },
     { title: 'Avatar', year: 2009, rating: 7.8 },
     { title: 'Brazil', year: 1985, rating: 8 },
     { title: 'الإرهاب والكباب‎', year: 1992, rating: 6.2 }
 ]
+
+const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
 
 router.get("/create", (req, res) => {  
     let movie = req.query;
@@ -47,8 +49,16 @@ router.get("/update", (req, res) => {
     res.json({message: "create"})
 })
 
-router.get("/delete", (req, res) => {
-    res.json({message: "create"})
+router.get("/delete/:name", (req, res) => {
+    let movieName = capitalizeFirstLetter(req.params.name);
+    const checkMovie = obj => obj.title === movieName;
+    if(movies.some(checkMovie)) {
+        movies = movies.filter(movie => movie.title !== movieName)
+        res.status(200).json({message: movies})
+    } 
+    else {
+        res.status(404).json({status:404, error:true, message:`the movie ${movieName} does not exist`})
+    }
 })
 
 module.exports = router;
