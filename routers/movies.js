@@ -61,4 +61,6 @@ router.get("/delete/:name", (req, res) => {
     }
 })
 
-module.exports = router;
+module.exports = {
+    router, movies
+};

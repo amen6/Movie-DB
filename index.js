@@ -3,7 +3,7 @@ const app = express()
 const moviesRouter = require("./routers/movies")
 const readRouter = require("./routers/read")
 
-app.use("/movies", moviesRouter)
+app.use("/movies", moviesRouter.router)
 app.use("/movies/read", readRouter)
 
 
