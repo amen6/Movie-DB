@@ -10,7 +10,7 @@ let movies = [
 
 const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
 
-router.get("/create", (req, res) => {  
+router.post("/create", (req, res) => {  
     let movie = req.query;
     const checkMovie = obj => obj.title === movie.title;
     if(!movie.title || movie.year.length != 4 || isNaN(movie.year)) {
@@ -45,7 +45,7 @@ router.get("/read", (req, res) => {
     res.json({status:200, data: movies})
 })
 
-router.get("/update/:name", (req, res) => {
+router.put("/update/:name", (req, res) => {
     let toModifyMovieName = capitalizeFirstLetter(req.params.name);
     let modifiedMovie = req.query;
     let movieName = capitalizeFirstLetter(req.params.name);
@@ -72,11 +72,11 @@ router.get("/update/:name", (req, res) => {
     }
 })
 
-router.get("/delete/:name", (req, res) => {
+router.delete("/delete/:name", (req, res) => {
     let movieName = capitalizeFirstLetter(req.params.name);
-    const checkMovie = obj => obj.title === movieName;
+    const checkMovie = obj => capitalizeFirstLetter(obj.title) === movieName;
     if(movies.some(checkMovie)) {
-        movies = movies.filter(movie => movie.title !== movieName)
+        movies = movies.filter(movie => capitalizeFirstLetter(movie.title) !== movieName)
         res.status(200).json({message: movies})
     } 
     else {
