@@ -52,9 +52,19 @@ router.get("/update/:name", (req, res) => {
     const checkMovie = obj => obj.title === toModifyMovieName;
     if(movies.some(checkMovie)) {
         let movieIndex = movies.findIndex(checkMovie);
-        if(modifiedMovie.name)  movies[movieIndex].title = capitalizeFirstLetter(modifiedMovie.name); 
+        if(modifiedMovie.title)  movies[movieIndex].title = capitalizeFirstLetter(modifiedMovie.title); 
         if(modifiedMovie.year)  movies[movieIndex].year = parseInt(modifiedMovie.year); 
-        if(modifiedMovie.rating)  movies[movieIndex].rating = parseFloat(modifiedMovie.rating); 
+        if(modifiedMovie.rating) {
+            let newRating = parseFloat(modifiedMovie.rating);
+            if(newRating > 10 || newRating < 0) {
+                res.status(400)
+                .json({status:400, error:true, message:'Rating value is not suitable, rating chould be between 0 and 10'})
+            }
+            else {
+                movies[movieIndex].rating = newRating;
+            }
+            
+        }   
         res.status(200).json({message: movies})
     } 
     else {
