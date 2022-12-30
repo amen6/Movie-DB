@@ -45,8 +45,21 @@ router.get("/read", (req, res) => {
     res.json({status:200, data: movies})
 })
 
-router.get("/update", (req, res) => {
-    res.json({message: "create"})
+router.get("/update/:name", (req, res) => {
+    let toModifyMovieName = capitalizeFirstLetter(req.params.name);
+    let modifiedMovie = req.query;
+    let movieName = capitalizeFirstLetter(req.params.name);
+    const checkMovie = obj => obj.title === toModifyMovieName;
+    if(movies.some(checkMovie)) {
+        let movieIndex = movies.findIndex(checkMovie);
+        if(modifiedMovie.name)  movies[movieIndex].title = capitalizeFirstLetter(modifiedMovie.name); 
+        if(modifiedMovie.year)  movies[movieIndex].year = parseInt(modifiedMovie.year); 
+        if(modifiedMovie.rating)  movies[movieIndex].rating = parseFloat(modifiedMovie.rating); 
+        res.status(200).json({message: movies})
+    } 
+    else {
+        res.status(404).json({status:404, error:true, message:`the movie ${movieName} does not exist`})
+    }
 })
 
 router.get("/delete/:name", (req, res) => {
